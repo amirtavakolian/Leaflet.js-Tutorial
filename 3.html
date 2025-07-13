@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+
+<div id="map" style="width: 100%;height: 100vh;"></div>
+
+<script>
+
+    const map = L.map("map").setView([31.343785399712278, 48.74897251307301], 17)
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+    // add marker to the map
+    let marker1 = L.marker([31.343785399712278, 48.74897251307301]).addTo(map)
+    let marker2 = L.marker([31.344511076327294, 48.74745522649473]).addTo(map)
+
+    // change the marker's icon
+    let myIcon = L.icon({
+        iconUrl: "./car.png",
+        iconSize: [50, 50]
+    });
+
+    let marker3 = L.marker([31.344376612374577, 48.74592727768323], {
+        icon: myIcon,
+        title: "My rent car center"  // hover on the icon to see it :D
+    }).addTo(map)
+
+    marker3.bindPopup('test test')  // add popup => click on the icon to see it :D
+
+    marker2.bindPopup('test').openPopup() // by default the popup is open :D no need to click
+
+    marker1.bindPopup(`
+      <div style="width: 280px; font-family: Arial, sans-serif;">
+        <img src="./airport.jpg" alt="Ahvaz Airport" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;">
+
+        <h3 style="margin: 0; font-size: 18px;">Ahvaz International Airport</h3>
+
+        <div style="font-size: 14px; margin: 4px 0;">
+          <span style="color: #fbbc04;">★★★★★</span> 3.8 (245)
+        </div>
+
+        <div style="font-size: 13px; color: #444;">International airport · ♿</div>
+
+        <hr style="margin: 10px 0;">
+
+        <div style="font-size: 13px; color: #333;">
+          📍 Khuzestan Province, Ahvaz, Iran<br>
+          📞 +98 61 3443 4601
+        </div>
+
+        <div style="margin-top: 8px;">
+          <a href="https://maps.google.com/?q=31.343785399712278,48.74897251307301" target="_blank" style="font-size: 13px; color: #1a73e8; text-decoration: none;">Open in Google Maps</a>
+        </div>
+      </div>
+`, {
+        minWidth: 270,
+        maxWidth: 270,
+        closeButton: true,
+        closeOnClick: false
+    });
+</script>
+
+</body>
+</html>

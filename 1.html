@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+
+    <div id="map" style="width: 100%;height: 100vh;"></div>
+    
+    <script>
+
+        // now we have to get the element (above div) and render map in that (create a map layer in it):
+
+        const map = L.map("map").setView([31.349444989902047, 48.68678593436888], 17)
+
+        // L is an object which references to Leaflet => access to all methods & classes in leaflet 
+        // "map" is the id of the <div>
+
+        // L.map("map") => just creates a map without anything to show 
+        // .setView([31.349444989902047, 48.68678593436888], 17) => here we define the place which we want the map to show 
+        // 17 => 1 till 18 => its about zooming :D 
+
+
+        // now we should load the tiles of the map:
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)        
+        // Every map is made up of a series of square pieces (layers - tiled image layers) put together. 
+        // its not like it's a complete picture. It's a series of square pieces (tiled image layer) put together.
+        // all maps are made up of all the squares put together and that map is created, like Google Maps.
+
+        // here we use openstreatmap api to load the tiled image layers
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map with Locate Control</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css"/>
+</head>
+
+<body>
+<div id="map" style="width: 100%; height: 100vh;"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
+
+<script>
+
+    const map = L.map("map", {
+        center: [31.349444989902047, 48.68678593436888],
+        zoom: 17,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const locateControl = L.control.locate().addTo(map);
+    locateControl.start();
+
+    map.on('locationfound', function (e) {
+        alert(5);
+        const lat = e.latitude;
+        const lng = e.longitude;
+
+        console.log(1)
+
+        fetch("save_location.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `lat=${lat}&lng=${lng}`
+        }).then(res => res.text())
+            .then(data => console.log(data));
+    });
+
+</script>
+
+</body>
+</html>

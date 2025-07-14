@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="assets/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+
+<div id="map" style="width: 100%;height: 100vh;"></div>
+
+
+<script>
+
+    const map = L.map("map").setView([31.342571204983543, 48.739669433994074], 14)
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+    L.marker([31.360154423663555, 48.71703604747204], 10).addTo(map)
+    L.marker([31.334800486599125, 48.76125585259947], 10).addTo(map)
+    L.marker([31.361709167479408, 48.78355389106345], 10).addTo(map)
+
+    L.polyline([
+        [31.360154423663555, 48.71703604747204],
+        [31.334800486599125, 48.76125585259947],
+        [31.361709167479408, 48.78355389106345],
+        [31.360154423663555, 48.71703604747204]
+    ], {
+        color: 'blue',
+        weight: 3,
+        dashArray: '15,20'
+    }).addTo(map)
+
+
+    //============================================================================
+    // filled shapes on the map
+
+
+    L.marker([31.358178087166948, 48.76207682715492], 10).addTo(map)
+    L.marker([31.351595915184465, 48.762926507638745], 10).addTo(map)
+    L.marker([31.350922123538968, 48.74942265709532], 10).addTo(map)
+
+
+    L.polygon([
+        [31.358178087166948, 48.76207682715492],
+        [31.351595915184465, 48.762926507638745],
+        [31.350922123538968, 48.74942265709532],
+        [31.358178087166948, 48.76207682715492],
+    ], {
+        color: 'red',
+        weight: 3,
+        fillColor: 'yellow',
+        fillOpacity: 0.5
+    }).addTo(map)
+
+
+    //============================================================================
+    // circle on the map
+
+    L.marker([31.337419358176902, 48.74186657007139], 10).addTo(map)
+
+    L.circle([31.337419358176902, 48.74186657007139], {
+        radius: 400,  // 400 meter
+        color: 'red'
+    }).addTo(map)
+
+
+    L.marker([31.346018676293927, 48.721795948022695], 10).addTo(map)
+
+    L.circleMarker([31.346018676293927, 48.721795948022695], {
+        radius: 100,  // 400 pixel
+        color: 'green'
+    }).addTo(map)
+
+</script>
+
+</body>
+</html>

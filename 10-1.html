@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>نقشه با خط بین دو نقطه</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    const point1 = [35.6892, 51.3890];
+    const point2 = [29.5918, 52.5836];
+
+    const map = L.map('map').setView(point1, 6);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const polyline = L.polyline([point1, point2], {
+        color: 'blue',
+        weight: 4,
+        opacity: 0.7
+    }).addTo(map);
+
+    L.marker(point1).addTo(map).bindPopup('source: tehran');
+    L.marker(point2).addTo(map).bindPopup('destination: shiraz');
+
+    const group = new L.featureGroup([polyline]);
+    map.fitBounds(group.getBounds());
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c;
+        return distance.toFixed(2);
+    }
+
+    console.log(`فاصله بین تهران و شیراز: ${getDistance(point1[0], point1[1], point2[0], point2[1])} کیلومتر`);
+
+
+</script>
+</body>
+</html>

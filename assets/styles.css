@@ -1,0 +1,60 @@
+/* استایل برای مدال SweetAlert2 */
+.swal2-popup {
+    font-family: 'Arial', sans-serif;
+    direction: rtl;
+    text-align: right;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.swal2-title {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.route-info {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.8;
+}
+
+.route-info p {
+    margin: 8px 0;
+}
+
+.route-info b {
+    color: #007bff;
+}
+
+.swal2-confirm {
+    background-color: #28a745 !important;
+    color: white !important;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+.swal2-cancel {
+    background-color: #dc3545 !important;
+    color: white !important;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+.swal2-close {
+    color: #666;
+    font-size: 1.5em;
+}
+
+.swal2-icon.swal2-info {
+    border-color: #007bff !important;
+    color: #007bff !important;
+}
+
+/* استایل برای نقشه */
+#map {
+    direction: ltr; /* نقشه باید LTR باشد */
+}

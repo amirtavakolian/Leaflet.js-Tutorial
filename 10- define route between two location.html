@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Route Map</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="./assets/styles.css"/>
+</head>
+<body>
+<div id="map" style="width: 100%;height: 100vh;"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const map = L.map('map').setView([35.6892, 51.3890], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    let clickCount = 0;
+    let sourcelat, sourcelong, destlat, destlong;
+    let polyLine;
+
+    map.on("click", function (e) {
+        if (clickCount === 0) {
+            sourcelat = e.latlng.lat;
+            sourcelong = e.latlng.lng;
+            clickCount++;
+            let marker1 = L.marker([sourcelat, sourcelong]).addTo(map);
+
+        } else if (clickCount === 1) {
+            destlat = e.latlng.lat;
+            destlong = e.latlng.lng;
+            clickCount = 0;
+            let marker2 = L.marker([destlat, destlong]).addTo(map);
+        }
+
+        if (destlat) {
+            const URL = `http://router.project-osrm.org/route/v1/driving/${sourcelong},${sourcelat};${destlong},${destlat}?overview=full&geometries=geojson&steps=true`;
+
+            fetch(URL).then(res => res.json()).then(data => {
+                console.log(data);
+
+
+                // here we get all the long & lat from source to destnation:
+                let coordinates = data.routes[0].geometry.coordinates;
+
+
+                // now we have to pass it to polygen
+                // but polygen needs lat first then long
+                // but we have long first then lat :D
+                let convertedCoordinates = coordinates.map(coor => [coor[1], coor[0]]);
+
+                polyLine = L.polyline(convertedCoordinates, {
+                    color: "red",
+                    weight: 3,
+                    opacity: 0.7
+                }).addTo(map);
+
+                const originName = data.waypoints[0].name || "undefined";
+                const destinationName = data.waypoints[1].name || "undefined";
+                const originLocation = data.waypoints[0].location;
+                const destinationLocation = data.waypoints[1].location;
+                const durationMinutes = Math.round(data.routes[0].duration / 60);
+                const distanceKm = (data.routes[0].distance / 1000).toFixed(2);
+
+                Swal.fire({
+                    title: "<strong>Route's Information:</strong>",
+                    icon: "info",
+                    html: `
+                            <div class="route-info">
+                                <p><b>Source:</b> ${originName}</p>
+                                <p><b>Source coordinates:</b> [${originLocation[1].toFixed(6)}, ${originLocation[0].toFixed(6)}]</p>
+                                <p><b>Destination:</b> ${destinationName}</p>
+                                <p><b>Destination coordinates:</b> [${destinationLocation[1].toFixed(6)}, ${destinationLocation[0].toFixed(6)}]</p>
+                                <p><b>Time:</b> ${durationMinutes} min</p>
+                                <p><b>Distance:</b> ${distanceKm} Km</p>
+                            </div>
+                        `,
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    confirmButtonText: `
+                            <i class="fa fa-thumbs-up"></i> Done!
+                        `,
+                    confirmButtonAriaLabel: "Thumbs up, great!",
+                    cancelButtonText: `
+                            <i class="fa fa-thumbs-down"></i>
+                        `,
+                    cancelButtonAriaLabel: "Thumbs down"
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>
